@@ -58,7 +58,7 @@ app.get("/blogs", (req, res) => {
 // })
 
 
-app.listen(3001, "100.115.92.199", () => {
+app.listen(3001, "100.115.92.196", () => {
     console.log("Server is running");
 });
 
