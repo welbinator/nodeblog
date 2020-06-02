@@ -28,7 +28,7 @@ const blogSchema = new mongoose.Schema({
     title: String,
     image: String,
     body: String,
-    created: {
+    date: {
         type: Date, default: Date.now
     }
 })
@@ -39,6 +39,7 @@ app.get("/", (req, res) => {
     res.redirect("/blogs");
 });
 
+//INDEX
 app.get("/blogs", (req, res) => {
     Blog.find({}, (err, blogs) => {
         if (err) {
@@ -49,13 +50,32 @@ app.get("/blogs", (req, res) => {
     })
 
 })
+//NEW ROUTE
+app.get("/blogs/new", (req, res) => {
+    res.render("new")
+})
 
+//CREATE ROUTE
+app.post("/blogs", (req, res) => {
+    Blog.create(req.body.blog, (err, newBlog) => {
+        if (err) {
+            res.render("new");
+        } else {
+            res.redirect("/blogs");
+        }
+    })
+})
 
-// Blog.create({
-//     title: "Typewriters are bomb",
-//     image: "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
-//     body: "Have you ever seen a typewriter like this?!?"
-// })
+//SHOW ROUTE
+app.get("/blogs/:id", (req, res) => {
+    Blog.findById(req.params.id, (err, foundBlog) => {
+        if (err) {
+            res.redirect("/blogs");
+        } else {
+            res.render("show", { blog: foundBlog });
+        }
+    })
+})
 
 
 app.listen(3001, "100.115.92.196", () => {
